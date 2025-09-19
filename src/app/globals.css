@@ -2,25 +2,100 @@
 
 :root {
   --background: #ffffff;
-  --foreground: #171717;
+  --foreground: #0b1220;
+  --primary-50: #eef6ff;
+  --primary-100: #d9ecff;
+  --primary-200: #b6d9ff;
+  --primary-300: #86c1ff;
+  --primary-400: #55a6ff;
+  --primary-500: #2a8cff; /* Primary Blue */
+  --primary-600: #0f74f0;
+  --primary-700: #0b5ec3;
+  --primary-800: #0a4b99;
+  --primary-900: #0a3d7a;
+
+  --accent-green: #22c55e;
+  --accent-orange: #f59e0b;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-sans);
+  --font-heading: var(--font-heading);
+  --font-body: var(--font-body);
+
+  --color-primary-50: var(--primary-50);
+  --color-primary-100: var(--primary-100);
+  --color-primary-200: var(--primary-200);
+  --color-primary-300: var(--primary-300);
+  --color-primary-400: var(--primary-400);
+  --color-primary-500: var(--primary-500);
+  --color-primary-600: var(--primary-600);
+  --color-primary-700: var(--primary-700);
+  --color-primary-800: var(--primary-800);
+  --color-primary-900: var(--primary-900);
+
+  --color-accent-green: var(--accent-green);
+  --color-accent-orange: var(--accent-orange);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: #0b1020;
+    --foreground: #e6eefb;
   }
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-body), system-ui, -apple-system, Segoe UI, Roboto,
+    Ubuntu, Cantarell, Noto Sans, Helvetica Neue, Arial, "Apple Color Emoji",
+    "Segoe UI Emoji";
 }
+
+/* Utilities */
+.container-px {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+@media (min-width: 640px) {
+  .container-px {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+}
+
+.btn-primary {
+  @apply inline-flex items-center justify-center rounded-full bg-primary-600 px-6 py-3 text-white shadow-lg shadow-primary-600/30 transition-transform hover:scale-[1.02] hover:bg-primary-500 active:scale-[0.98];
+}
+
+.card {
+  @apply rounded-2xl bg-white/80 dark:bg-white/5 backdrop-blur border border-white/30 shadow-sm shadow-black/5;
+}
+
+.gradient-hero {
+  background-image: radial-gradient(1200px 600px at 50% -10%, rgba(59,130,246,0.25), transparent 60%),
+    linear-gradient(135deg, #dbeafe 0%, #1e3a8a 100%);
+}
+
+/* Animations */
+@keyframes floatUp {
+  0% { opacity: 0; transform: translateY(16px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes gradientShift {
+  0% { filter: hue-rotate(0deg); }
+  100% { filter: hue-rotate(20deg); }
+}
+.animate-floatUp { animation: floatUp 600ms ease-out both; }
+.animate-floatUp-delay-1 { animation-delay: 100ms; }
+.animate-floatUp-delay-2 { animation-delay: 200ms; }
+.animate-floatUp-delay-3 { animation-delay: 300ms; }
+.animate-fadeIn { animation: fadeIn 800ms ease-out both; }
+.animate-gradientShift { animation: gradientShift 6s ease-in-out infinite alternate; }
