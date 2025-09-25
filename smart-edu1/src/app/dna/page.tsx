@@ -40,30 +40,6 @@ export default function LearningDNA() {
     <div className="min-h-screen p-6 md:p-10">
       <div className="flex items-center justify-between gap-4">
         <h1 className="font-[family-name:var(--font-heading)] text-2xl font-semibold">Learning DNA</h1>
-        <div className="flex items-center gap-3">
-          <a
-            href="https://pythontutor.com/visualize.html#mode=edit"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="btn-primary"
-            onClick={() => {
-              try { updateDNAFromActivity("visual"); setSuggested(getSuggestion(loadDNA())); } catch {}
-            }}
-          >
-            Code Visualizer
-          </a>
-          <a
-            href="https://www.programiz.com/online-compiler/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="rounded-xl border border-white/20 px-4 py-2 hover:bg-white/10"
-            onClick={() => {
-              try { updateDNAFromActivity("kinesthetic"); setSuggested(getSuggestion(loadDNA())); } catch {}
-            }}
-          >
-            Run Code
-          </a>
-        </div>
       </div>
       <div className="card mt-6 p-6">
         <h2 className="text-xl font-semibold">Quick Assessment</h2>

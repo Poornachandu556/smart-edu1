@@ -9,6 +9,7 @@ import { toast } from "sonner";
 import CourseDetailsModal from "@/components/CourseDetailsModal";
 import YouTubePlaylistModal from "@/components/YouTubePlaylistModal";
 import { useRouter } from "next/navigation";
+import { updateDNAFromActivity } from "@/lib/learningDNA";
 
 export default function CoursesPage() {
   const { isEnrolled, enroll } = useEnrollments();
@@ -65,6 +66,28 @@ export default function CoursesPage() {
   return (
     <div className="min-h-screen font-sans">
       <main className="container-px mx-auto py-8">
+        {/* Header Actions (top-left and top-right) */}
+        <div className="relative mb-4">
+          <a
+            href="https://pythontutor.com/visualize.html#mode=edit"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn-primary absolute left-0 top-0"
+            onClick={() => { try { updateDNAFromActivity("visual"); } catch {} }}
+          >
+            Code Visualizer
+          </a>
+          <a
+            href="https://www.programiz.com/online-compiler/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="rounded-xl border border-white/20 px-4 py-2 hover:bg-white/10 absolute right-0 top-0"
+            onClick={() => { try { updateDNAFromActivity("kinesthetic"); } catch {} }}
+          >
+            Run Code
+          </a>
+        </div>
+
         {/* Header Section */}
         <div className="text-center mb-12">
           <h1 className="font-[family-name:var(--font-heading)] text-4xl font-bold mb-4">

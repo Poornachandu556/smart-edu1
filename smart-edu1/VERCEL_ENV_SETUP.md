@@ -38,7 +38,7 @@ https://smart-79ko6wh64-jonnagadalac-2600s-projects.vercel.app
 
 ## How to Add in Vercel:
 
-1. Go to: https://vercel.com/jonnagadalac-2600s-projects/smart-edu/settings
+1. Go to: https://vercel.com/jonnagadalac-2600s-projects/smart-edu2/settings
 2. Click "Environment Variables" tab
 3. Add each variable with its value
 4. Click "Save"

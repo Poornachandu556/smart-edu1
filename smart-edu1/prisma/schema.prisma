@@ -2,9 +2,63 @@ generator client {
   provider = "prisma-client-js"
 }
 
+// Community forum models
+model Post {
+  id        String   @id @default(cuid())
+  userId    String
+  courseId  String? // optional: link post to a course
+  title     String
+  body      String
+  tagsJson  String   @default("[]")
+  upvotes   Int      @default(0)
+  createdAt DateTime @default(now())
+
+  user     User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  answers  Answer[]
+  upvoters PostUpvote[]
+
+  @@index([courseId, createdAt])
+}
+
+model Answer {
+  id        String   @id @default(cuid())
+  postId    String
+  userId    String
+  body      String
+  upvotes   Int      @default(0)
+  createdAt DateTime @default(now())
+
+  post Post @relation(fields: [postId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([postId, createdAt])
+}
+
+model PostUpvote {
+  id     String @id @default(cuid())
+  postId String
+  userId String
+
+  post Post @relation(fields: [postId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([postId, userId])
+}
+
+model BadgeAward {
+  id        String   @id @default(cuid())
+  userId    String
+  badge     String
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, badge])
+}
+
 datasource db {
-  provider  = "postgresql"
-  url       = env("DATABASE_URL")
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 model User {
@@ -17,10 +71,16 @@ model User {
   passwordHash  String?   @map("password_hash")
   role          String    @default("user")
 
-  accounts     Account[]
-  sessions     Session[]
-  enrollments  Enrollment[]
-  userActivity UserActivity?
+  accounts       Account[]
+  sessions       Session[]
+  enrollments    Enrollment[]
+  userActivity   UserActivity?
+  activityEvents ActivityEvent[]
+  videoProgress  VideoProgress[]
+  posts          Post[]
+  answers        Answer[]
+  postUpvotes    PostUpvote[]
+  badgeAwards    BadgeAward[]
 }
 
 model Account {
@@ -82,4 +142,35 @@ model UserActivity {
   updatedAt  DateTime @updatedAt
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+/// Granular activity events (study sessions, quiz attempts, generic actions)
+model ActivityEvent {
+  id        String   @id @default(cuid())
+  userId    String
+  type      String // e.g., "study_session", "quiz_submit", "video_watch", "page_view"
+  durationS Int      @default(0) // seconds, if applicable
+  metaJson  String   @default("{}") // arbitrary JSON payload
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, type, createdAt])
+}
+
+/// Per-video progress for the user
+model VideoProgress {
+  id             String   @id @default(cuid())
+  userId         String
+  videoId        String
+  courseId       String?
+  secondsWatched Int      @default(0)
+  lastPositionS  Int      @default(0)
+  completed      Boolean  @default(false)
+  updatedAt      DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, videoId])
+  @@index([userId, courseId])
 }
